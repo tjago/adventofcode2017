@@ -1,124 +1,28 @@
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Stream;
-
 /**
- * Created by jagod on 06/12/2016.
+ * Created by jagod on 06/12/2017.
+ *
+ * correct Answer 1031
  */
 public class Day1 {
+
+    public static final String code = "57276274387944537823652626177853384411146325384494935924454336611953119173638191671326254832624841593421667683474349154668177743437745965461678636631863541462893547616877914914662358836365421198516263335926544716331814125295712581158399321372683742773423626286669759415959391374744214595682795818615532673877868424196926497731144319736445141728123322962547288572434564178492753681842244888368542423832228211172842456231275738182764232265933625119312598161192193214898949267765417468348935134618964683127194391796165368145548814473129857697989322621368744725685183346825333247866734735894493395218781464346951777873929898961358796274889826894529599645442657423438562423853247543621565468819799931598754753467593832328147439341586125262733737128386961596394728159719292787597426898945198788211417854662948358422729471312456437778978749753927251431677533575752312447488337156956217451965643454445329758327129966657189332824969141448538681979632611199385896965946849725421978137753366252459914913637858783146735469758716752765718189175583956476935185985918536318424248425426398158278111751711911227818826766177996223718837428972784328925743869885232266127727865267881592395643836999244218345184474613129823933659422223685422732186536199153988717455568523781673393698356967355875123554797755491181791593156433735591529495984256519631187849654633243225118132152549712643273819314433877592644693826861523243946998615722951182474773173215527598949553185313259992227879964482121769617218685394776778423378182462422788277997523913176326468957342296368178321958626168785578977414537368686438348124283789748775163821457641135163495649331144436157836647912852483177542224864952271874645274572426458614384917923623627532487625396914111582754953944965462576624728896917137599778828769958626788685374749661741223741834844643725486925886933118382649581481351844943368484853956759877215252766294896496444835264357169642341291412768946589781812493421379575569593678354241223363739129813633236996588711791919421574583924743119867622229659211793468744163297478952475933163259769578345894367855534294493613767564497137369969315192443795512585";
+
+
     public static void main(String[] args) {
-        new Day1().solution();
-    }
+        int sum = 0;
 
-    final String[] elvesInstruction = {"R4", "R4", "L1", "R3", "L5", "R2", "R5", "R1", "L4", "R3", "L5", "R2", "L3", "L4",
-                               "L3", "R1", "R5", "R1", "L3", "L1", "R3", "L1", "R2", "R2", "L2", "R5", "L3", "L4",
-                               "R4", "R4", "R2", "L4", "L1", "R5", "L1", "L4", "R4", "L1", "R1", "L2", "R5", "L2",
-                               "L3", "R2", "R1", "L194", "R2", "L4", "R49", "R1", "R3", "L5", "L4", "L1", "R4",
-                               "R2", "R1", "L5", "R3", "L5", "L4", "R4", "R4", "L2", "L3", "R78", "L5", "R4", "R191",
-                               "R4", "R3", "R1", "L2", "R1", "R3", "L1", "R3", "R4", "R2", "L2", "R1", "R4", "L5", "R2",
-                               "L2", "L4", "L2", "R1", "R2", "L3", "R5", "R2", "L3", "L3", "R3", "L1", "L1", "R5", "L4",
-                               "L4", "L2", "R5", "R1", "R4", "L3", "L5", "L4", "R5", "L4", "R5", "R4", "L3", "L2", "L5",
-                               "R4", "R3", "L3", "R1", "L5", "R5", "R1", "L3", "R2", "L5", "R5", "L3", "R1", "R4", "L5",
-                               "R4", "R2", "R3", "L4", "L5", "R3", "R4", "L5", "L5", "R4", "L4", "L4", "R1", "R5", "R3",
-                               "L1", "L4", "L3", "L4", "R1", "L5", "L1", "R2", "R2", "R4", "R4", "L5", "R4", "R1", "L1",
-                               "L1", "L3", "L5", "L2", "R4", "L3", "L5", "L4", "L1", "R3"};
+        for (int i = 0; i < code.length() -1; i++) {
+            System.out.println("number: " + code.substring(i, i+1));
+            int currentNumber = Integer.parseInt(code.substring(i, i+1));
+            int nextNumber = Integer.parseInt(code.substring(i+1, i+2));
 
-    IntVector2 easterBunnyLoc = new IntVector2(0,0);
-
-    Direction currentDirection = Direction.NORTH;
-
-    private void solution() {
-        Stream.of(elvesInstruction)
-                .map(this::stepToVector2)
-                .reduce(IntVector2::combine)
-                .ifPresent(intVector2 -> System.out.println("Result: " + intVector2.getDistance()));
-    }
-
-//    public Stream<String> streamWalk(String step) {
-//        if (step != null) {
-//            return Stream.of(step);
-//        } else {
-//            return s3Client
-//                    .listDirectory(step)
-//                    .stream()
-//                    .flatMap(this::streamWalk);
-//        }
-//    }
-
-    private void solutionRecursive() {
-        Stream.of(elvesInstruction)
-                .map(this::stepToVector2)
-                .reduce(IntVector2::combine)
-                .ifPresent(intVector2 -> System.out.println("Result: " + intVector2.getDistance()));
-    }
-
-    Set<IntVector2> positions = new HashSet<>();
-
-    private void addPositions(IntVector2 vector) {
-        if (vector.x == 0) {
-            while (vector.y-- < 0) {
-
+            if (currentNumber == nextNumber) {
+                sum+= currentNumber;
             }
         }
-    }
-
-    private IntVector2 stepToVector2(final String s) {
-
-        int stepVal = Integer.parseInt(s.substring(1));
-        this.currentDirection = updateDirection(this.currentDirection, s.charAt(0));
-
-        switch (currentDirection) {
-            case NORTH: return new IntVector2(0,stepVal);
-            case EAST: return new IntVector2(stepVal, 0);
-            case SOUTH: return new IntVector2(0, -1 * stepVal);
-            case WEST: return new IntVector2( -1 * stepVal, 0);
+        if (Integer.parseInt(code.substring(code.length()-1, code.length())) ==  Integer.parseInt(code.substring(0,1))) {
+            sum+= Integer.parseInt(code.substring(0,1));
         }
-        throw new EnumConstantNotPresentException(Direction.class, "not present");
-    }
-
-    private Direction updateDirection(Direction currentDirection, char c) {
-        if (c == 'R')
-            return currentDirection.rotateRight(currentDirection); //oh God, so ugly here
-        else
-            return currentDirection.rotateLeft(currentDirection);
-    }
-
-    private class IntVector2 {
-        public int x;
-        public int y;
-
-        public IntVector2(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-        public IntVector2 combine(IntVector2 otherVector) {
-            return new IntVector2(this.x + otherVector.x, this.y + otherVector.y);
-        }
-        public int getDistance() {
-            return Math.abs(x) + Math.abs(y);
-        }
-    }
-
-    private enum Direction { NORTH, EAST, SOUTH, WEST;
-
-        public Direction rotateLeft(Direction dir) {
-            switch (dir) {
-                case NORTH: return WEST;
-                case WEST:  return SOUTH;
-                case SOUTH: return EAST;
-                case EAST:  return NORTH;
-            }
-            throw new EnumConstantNotPresentException(Direction.class, "not present");
-        }
-
-        public Direction rotateRight(Direction dir) {
-            switch (dir) {
-                case NORTH: return EAST;
-                case EAST:  return SOUTH;
-                case SOUTH: return WEST;
-                case WEST:  return NORTH;
-            }
-            throw new EnumConstantNotPresentException(Direction.class, "not present");
-        }
+        System.out.println("Sum = " + sum);
     }
 }
